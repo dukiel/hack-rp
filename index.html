@@ -168,9 +168,9 @@
 
         .rp-icon-container {
             position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px auto;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px auto;
             animation: float 3s ease-in-out infinite;
             transform-style: preserve-3d;
         }
@@ -201,7 +201,7 @@
     <div id="particles" class="absolute inset-0 overflow-hidden pointer-events-none z-0"></div>
 
     <main id="tilt-card" class="z-10 w-full max-w-xl px-4">
-        <div class="hex-border p-8 md:p-12 flex flex-col items-center text-center rounded-sm">
+        <div class="hex-border p-6 md:p-10 flex flex-col items-center text-center rounded-sm">
             
             <div class="rp-icon-container drop-shadow-[0_0_15px_rgba(200,170,110,0.5)]">
                 <svg viewBox="0 0 100 100" class="w-full h-full relative z-10">
@@ -220,75 +220,65 @@
                             <stop offset="50%" stop-color="rgba(255,255,255,0.7)" />
                             <stop offset="100%" stop-color="rgba(255,255,255,0)" />
                         </linearGradient>
-                        
-                        <!-- Clip path mesclando as duas moedas para o reflexo não vazar -->
                         <clipPath id="coin-clip">
                             <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" />
                             <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" transform="translate(-15, 12) scale(0.85)" />
                         </clipPath>
                     </defs>
                     
-                    <!-- Moeda de Trás -->
                     <g transform="translate(-15, 12) scale(0.85)">
-                        <!-- Sombra base 3D -->
                         <polygon points="50,15 90,35 90,85 50,105 10,85 10,35" fill="#1e1305" />
-                        <!-- Borda externa -->
                         <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" fill="url(#gold-dark)" stroke="#3a2505" stroke-width="1"/>
-                        <!-- Relevo brilhante -->
                         <polygon points="50,12 83,28 83,72 50,88 17,72 17,28" fill="url(#gold-light)"/>
-                        <!-- Centro escuro -->
                         <polygon points="50,20 74,32 74,68 50,80 26,68 26,32" fill="url(#gold-dark)"/>
-                        <!-- Detalhe geométrico interno central (sem letras) -->
                         <path d="M 50 30 L 65 38 L 65 62 L 50 70 L 35 62 L 35 38 Z" fill="none" stroke="url(#gold-light)" stroke-width="5" stroke-linejoin="round"/>
                         <polygon points="50,38 58,42 58,58 50,62 42,58 42,42" fill="url(#gold-light)"/>
                     </g>
 
-                    <!-- Moeda da Frente -->
                     <g>
-                        <!-- Sombra base 3D -->
                         <polygon points="50,15 90,35 90,85 50,105 10,85 10,35" fill="#1e1305" />
-                        <!-- Borda externa -->
                         <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" fill="url(#gold-dark)" stroke="#3a2505" stroke-width="1"/>
-                        <!-- Relevo brilhante -->
                         <polygon points="50,12 83,28 83,72 50,88 17,72 17,28" fill="url(#gold-light)"/>
-                        <!-- Centro escuro -->
                         <polygon points="50,20 74,32 74,68 50,80 26,68 26,32" fill="url(#gold-dark)"/>
-                        <!-- Detalhe geométrico interno central (sem letras) -->
                         <path d="M 50 30 L 65 38 L 65 62 L 50 70 L 35 62 L 35 38 Z" fill="none" stroke="url(#gold-light)" stroke-width="5" stroke-linejoin="round"/>
                         <polygon points="50,38 58,42 58,58 50,62 42,58 42,42" fill="url(#gold-light)"/>
                     </g>
 
-                    <!-- Reflexo Dinâmico -->
                     <g clip-path="url(#coin-clip)">
                         <rect class="reflexo-svg" x="-50" y="-50" width="35" height="250" fill="url(#shine-grad)" pointer-events="none" />
                     </g>
                 </svg>
             </div>
 
-            <h1 class="font-title text-2xl md:text-3xl text-lolGoldHover mb-2 tracking-widest uppercase tz-50">
-                Sistema Hextec Infiltrado
+            <h1 class="font-title text-xl md:text-2xl text-lolGoldHover mb-2 tracking-widest uppercase tz-50">
+                Sistema de RP Infiltrado
             </h1>
             
-            <p class="text-lolGold/80 mb-4 text-sm md:text-base max-w-sm tz-30">
-                Transferência concluída. <strong class="text-lolBlue drop-shadow-[0_0_5px_rgba(10,200,185,0.8)] text-lg">1830 RP</strong> injetados na conta <strong class="text-lolGoldHover">mono trash#yse</strong>.
+            <p class="text-lolGold/80 mb-3 text-xs md:text-sm max-w-sm tz-30">
+                Transferência concluída. <strong class="text-lolBlue drop-shadow-[0_0_5px_rgba(10,200,185,0.8)]">1830 RP</strong> (divididos em 3 cartões) injetados na conta <strong class="text-lolGoldHover">mono trash#yse</strong>.
             </p>
             
-            <p class="text-lolGold/50 italic mb-8 text-xs max-w-sm tz-20">
-                "Vê se com skin nova tu para de culpar o hardware e foca em não feedar na minha lane." <br><br>
+            <p class="text-lolGold/50 italic mb-6 text-xs max-w-sm tz-20">
+                "Vai lá amassar os newbas do platina com uma skin nova" <br>
                 Operação executada por: <strong class="text-lolGoldHover">Dukiel#1337</strong>
             </p>
 
-            <div id="interaction-area" class="w-full flex flex-col items-center min-h-[80px] justify-center tz-50">
+            <div id="interaction-area" class="w-full flex flex-col items-center justify-center tz-50">
                 <button id="revealBtn" class="btn-lol px-8 py-3 font-title font-bold text-sm outline-none cursor-pointer">
-                    Decriptar Chave de Acesso
+                    Decriptar Chaves de Acesso
                 </button>
 
-                <div id="code-display" class="code-container w-full">
-                    <p class="text-xs text-lolGold/60 uppercase tracking-widest mb-2 font-bold">Chave de Resgate</p>
-                    <div class="bg-lolDark/80 border border-lolBlue/50 p-4 rounded flex items-center justify-center group relative overflow-hidden h-[60px]">
-                        <div class="absolute inset-0 bg-lolBlue/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <code id="rp-code" class="font-mono text-lolBlue text-lg md:text-xl tracking-widest relative z-10 drop-shadow-[0_0_8px_rgba(10,200,185,0.5)]">
-                        </code>
+                <div id="code-display" class="code-container w-full space-y-3 mt-2">
+                    <p class="text-xs text-lolGold/60 uppercase tracking-widest font-bold">Chaves de Resgate</p>
+                    
+                    <div class="bg-lolDark/80 border border-lolBlue/50 p-2.5 rounded flex items-center justify-center relative overflow-hidden h-[45px]">
+                        <code id="rp-code-0" class="font-mono text-lolBlue text-sm md:text-base tracking-widest relative z-10 drop-shadow-[0_0_8px_rgba(10,200,185,0.5)]"></code>
+                    </div>
+                    <div class="bg-lolDark/80 border border-lolBlue/50 p-2.5 rounded flex items-center justify-center relative overflow-hidden h-[45px]">
+                        <code id="rp-code-1" class="font-mono text-lolBlue text-sm md:text-base tracking-widest relative z-10 drop-shadow-[0_0_8px_rgba(10,200,185,0.5)]"></code>
+                    </div>
+                    <div class="bg-lolDark/80 border border-lolBlue/50 p-2.5 rounded flex items-center justify-center relative overflow-hidden h-[45px]">
+                        <code id="rp-code-2" class="font-mono text-lolBlue text-sm md:text-base tracking-widest relative z-10 drop-shadow-[0_0_8px_rgba(10,200,185,0.5)]"></code>
                     </div>
                 </div>
             </div>
@@ -296,7 +286,14 @@
     </main>
 
     <script>
-        const CODIGO_REAL = "XXXX-XXXX-XXXX-XXXX"; 
+        // ==========================================
+        // INSIRA OS 3 CÓDIGOS AQUI NAS ASPAS
+        // ==========================================
+        const CODIGOS_REAIS = [
+            "95213156206967773",
+            "97410660109348681",
+            "96513673843866739"
+        ]; 
 
         const canvas = document.getElementById('matrix-bg');
         const ctx = canvas.getContext('2d');
@@ -340,37 +337,39 @@
 
         const revealBtn = document.getElementById('revealBtn');
         const codeDisplay = document.getElementById('code-display');
-        const rpCodeText = document.getElementById('rp-code');
         const particlesContainer = document.getElementById('particles');
 
         revealBtn.addEventListener('click', () => {
             revealBtn.style.display = 'none';
             codeDisplay.classList.add('code-active');
             
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
-            let iteration = 0;
-            const speed = 40; 
-            const lettersPerTick = 1/3; 
-            
-            const interval = setInterval(() => {
-                let currentText = CODIGO_REAL.split('').map((letter, index) => {
-                    if (letter === '-') return '-';
-                    if (index < Math.floor(iteration * lettersPerTick)) {
-                        return CODIGO_REAL[index];
-                    }
-                    return chars[Math.floor(Math.random() * chars.length)];
-                }).join('');
+            CODIGOS_REAIS.forEach((codigoReal, index) => {
+                const codeElement = document.getElementById(`rp-code-${index}`);
+                const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
+                let iteration = 0;
+                const speed = 40; 
+                const lettersPerTick = 1/3; 
                 
-                rpCodeText.innerText = currentText;
-                
-                if (iteration % 2 === 0) createExplosionParticle();
+                const interval = setInterval(() => {
+                    let currentText = codigoReal.split('').map((letter, idx) => {
+                        if (letter === '-') return '-';
+                        if (idx < Math.floor(iteration * lettersPerTick)) {
+                            return codigoReal[idx];
+                        }
+                        return chars[Math.floor(Math.random() * chars.length)];
+                    }).join('');
+                    
+                    codeElement.innerText = currentText;
+                    
+                    if (iteration % 3 === 0) createExplosionParticle();
 
-                if (iteration * lettersPerTick >= CODIGO_REAL.length) {
-                    clearInterval(interval);
-                    rpCodeText.innerText = CODIGO_REAL;
-                }
-                iteration++;
-            }, speed);
+                    if (iteration * lettersPerTick >= codigoReal.length) {
+                        clearInterval(interval);
+                        codeElement.innerText = codigoReal;
+                    }
+                    iteration++;
+                }, speed);
+            });
         });
 
         function createAmbientParticle() {
@@ -396,16 +395,15 @@
         }
 
         function createExplosionParticle() {
-            const rect = rpCodeText.getBoundingClientRect();
             const particle = document.createElement('div');
             particle.classList.add('particle');
             particle.style.backgroundColor = '#0ac8b9';
-            particle.style.left = (rect.left + rect.width / 2) + 'px';
-            particle.style.top = (rect.top + rect.height / 2) + 'px';
+            particle.style.left = (window.innerWidth / 2 + (Math.random() * 200 - 100)) + 'px';
+            particle.style.top = (window.innerHeight / 2 + (Math.random() * 100)) + 'px';
             particlesContainer.appendChild(particle);
 
             const angle = Math.random() * Math.PI * 2;
-            const velocity = Math.random() * 80 + 30;
+            const velocity = Math.random() * 60 + 20;
             const tx = Math.cos(angle) * velocity;
             const ty = Math.sin(angle) * velocity;
 
