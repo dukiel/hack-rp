@@ -2,130 +2,355 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terminal Hextec - Acesso Restrito</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lolDark: '#0a0a0c',
+                        lolGold: '#c8aa6e',
+                        lolGoldHover: '#f0e6d2',
+                        lolBlue: '#0ac8b9',
+                    },
+                    fontFamily: {
+                        title: ['Cinzel', 'serif'],
+                        body: ['Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         body {
-            background-color: #010a13;
+            background-color: #0a0a0c;
             color: #c8aa6e;
-            text-align: center;
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            perspective: 1200px;
         }
-        #particles {
+
+        #matrix-bg {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            opacity: 0.15;
             pointer-events: none;
         }
+
+        .fog-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .fog {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: 
+                radial-gradient(circle at 30% 50%, rgba(10, 200, 185, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 70% 60%, rgba(200, 170, 110, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 50% 30%, rgba(20, 22, 28, 0.8) 0%, transparent 60%);
+            filter: blur(40px);
+            animation: fogDrift 25s infinite alternate ease-in-out;
+            opacity: 0.8;
+        }
+
+        .fog:nth-child(2) {
+            background: 
+                radial-gradient(circle at 60% 40%, rgba(10, 200, 185, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 40% 70%, rgba(10, 10, 12, 0.9) 0%, transparent 50%);
+            animation: fogDrift 35s infinite alternate-reverse ease-in-out;
+            opacity: 0.6;
+        }
+
+        @keyframes fogDrift {
+            0% { transform: translate(-5%, -5%) scale(1); }
+            50% { transform: translate(5%, 2%) scale(1.1); }
+            100% { transform: translate(-2%, 5%) scale(1.05); }
+        }
+
+        #tilt-card {
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        .hex-border {
+            position: relative;
+            border: 1px solid rgba(200, 170, 110, 0.5);
+            background: linear-gradient(135deg, rgba(10, 10, 12, 0.4) 0%, rgba(20, 22, 28, 0.5) 100%);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(200, 170, 110, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transform-style: preserve-3d;
+        }
+
+        .hex-border::before, .hex-border::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border: 1px solid #c8aa6e;
+            background: rgba(10, 10, 12, 0.8);
+            transform: translateZ(1px);
+        }
+        .hex-border::before { top: -4px; left: -4px; }
+        .hex-border::after { bottom: -4px; right: -4px; }
+
+        .tz-20 { transform: translateZ(20px); }
+        .tz-30 { transform: translateZ(30px); }
+        .tz-50 { transform: translateZ(50px); }
+
+        .btn-lol {
+            position: relative;
+            background: transparent;
+            border: 1px solid #c8aa6e;
+            color: #c8aa6e;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .btn-lol::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(200, 170, 110, 0.2), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .btn-lol:hover {
+            background: rgba(200, 170, 110, 0.15);
+            color: #f0e6d2;
+            box-shadow: 0 0 15px rgba(200, 170, 110, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn-lol:hover::before { left: 100%; }
+        .btn-lol:active { transform: translateY(1px); }
+
+        .code-container { display: none; }
+        .code-active { display: block; animation: revealCode 0.8s ease-out forwards; }
+
+        @keyframes revealCode {
+            0% { opacity: 0; transform: scale(0.9) translateY(10px); filter: blur(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+        }
+
         .particle {
             position: absolute;
+            bottom: -10px;
             background-color: #c8aa6e;
             border-radius: 50%;
-            opacity: 0.6;
-            animation: floatUp linear infinite;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
         }
-        @keyframes floatUp {
-            from { transform: translateY(100vh); opacity: 0.8; }
-            to { transform: translateY(-10vh); opacity: 0; }
-        }
-        .container {
-            border: 2px solid #c8aa6e;
-            padding: 40px;
-            background: rgba(1, 10, 19, 0.85);
-            box-shadow: 0 0 25px #c8aa6e;
+
+        .rp-icon-container {
             position: relative;
-            z-index: 1;
-            backdrop-filter: blur(5px);
-        }
-        .chest-container {
+            width: 120px;
+            height: 120px;
             margin: 0 auto 20px auto;
-            width: 80px;
-            height: 80px;
-            position: relative;
-            animation: floatChest 3s ease-in-out infinite;
+            animation: float 3s ease-in-out infinite;
+            transform-style: preserve-3d;
         }
-        @keyframes floatChest {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateZ(60px); }
+            50% { transform: translateY(-10px) translateZ(60px); }
         }
-        .chest-lid {
-            transform-origin: bottom center;
-            animation: openLid 2.5s alternate infinite ease-in-out;
+
+        @keyframes sweep-shine {
+            0% { transform: translateX(-80px) rotate(35deg); }
+            20%, 100% { transform: translateX(180px) rotate(35deg); }
         }
-        @keyframes openLid {
-            0%, 15% { transform: translateY(0) rotateX(0deg); }
-            85%, 100% { transform: translateY(-8px) rotateX(25deg); }
-        }
-        h1 { color: #f0e6d2; text-transform: uppercase; letter-spacing: 2px; }
-        p { font-size: 18px; max-width: 450px; margin: 10px auto; line-height: 1.5; }
-        .rp-destaque { color: #0ac8b9; font-weight: bold; font-size: 22px; text-shadow: 0 0 8px #0ac8b9; }
-        .mensagem { font-style: italic; color: #a09b8c; font-size: 14px; margin-bottom: 30px; }
-        button {
-            padding: 15px 30px;
-            background: linear-gradient(180deg, #1e2328, #433f32);
-            border: 2px solid #c8aa6e;
-            color: #f0e6d2;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-        button:hover { background: #c8aa6e; color: #010a13; box-shadow: 0 0 15px #c8aa6e; }
-        #codigo {
-            font-size: 28px;
-            letter-spacing: 4px;
-            margin-top: 30px;
-            color: #0ac8b9;
-            text-shadow: 0 0 10px #0ac8b9;
-            height: 35px;
-            font-family: monospace;
+        .reflexo-svg {
+            animation: sweep-shine 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
-<body>
-    <div id="particles"></div>
-    <div class="container">
-        <div class="chest-container">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="20,50 80,50 90,90 10,90" fill="#1e2328" stroke="#c8aa6e" stroke-width="3"/>
-                <line x1="15" y1="70" x2="85" y2="70" stroke="#c8aa6e" stroke-width="1.5" opacity="0.5"/>
-                <line x1="50" y1="50" x2="50" y2="90" stroke="#c8aa6e" stroke-width="1.5" opacity="0.5"/>
-                <g class="chest-lid">
-                    <polygon points="10,45 90,45 80,15 20,15" fill="#1e2328" stroke="#c8aa6e" stroke-width="3"/>
-                    <circle cx="50" cy="45" r="10" fill="#0ac8b9" stroke="#c8aa6e" stroke-width="2"/>
-                    <circle cx="50" cy="45" r="4" fill="#ffffff" opacity="0.8"/>
-                </g>
-            </svg>
-        </div>
+<body class="font-body antialiased selection:bg-lolGold selection:text-lolDark">
 
-        <h1>SISTEMA HEXTEC INFILTRADO</h1>
-        <p>Transferência concluída. <span class="rp-destaque">1830 RP</span> injetados na conta <strong>mono trash#yse</strong>.</p>
-        <p class="mensagem">Vê se com skin nova tu para de culpar o hardware e foca em não feedar na minha lane. <br><br>Operação executada por: <strong>Dukiel#1337</strong></p>
-        
-        <button id="btn-decodificar" onclick="iniciarDecriptacao()">Decriptar Chave de Acesso</button>
-        <div id="codigo"></div>
+    <canvas id="matrix-bg"></canvas>
+
+    <div class="fog-container">
+        <div class="fog"></div>
+        <div class="fog"></div>
     </div>
 
+    <div id="particles" class="absolute inset-0 overflow-hidden pointer-events-none z-0"></div>
+
+    <main id="tilt-card" class="z-10 w-full max-w-xl px-4">
+        <div class="hex-border p-8 md:p-12 flex flex-col items-center text-center rounded-sm">
+            
+            <div class="rp-icon-container drop-shadow-[0_0_15px_rgba(200,170,110,0.5)]">
+                <svg viewBox="0 0 100 100" class="w-full h-full relative z-10">
+                    <defs>
+                        <linearGradient id="gold-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#8a611c" />
+                            <stop offset="100%" stop-color="#3a2505" />
+                        </linearGradient>
+                        <linearGradient id="gold-light" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#f0e6d2" />
+                            <stop offset="50%" stop-color="#c8aa6e" />
+                            <stop offset="100%" stop-color="#a07b3e" />
+                        </linearGradient>
+                        <linearGradient id="shine-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="rgba(255,255,255,0)" />
+                            <stop offset="50%" stop-color="rgba(255,255,255,0.7)" />
+                            <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+                        </linearGradient>
+                        
+                        <!-- Clip path mesclando as duas moedas para o reflexo não vazar -->
+                        <clipPath id="coin-clip">
+                            <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" />
+                            <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" transform="translate(-15, 12) scale(0.85)" />
+                        </clipPath>
+                    </defs>
+                    
+                    <!-- Moeda de Trás -->
+                    <g transform="translate(-15, 12) scale(0.85)">
+                        <!-- Sombra base 3D -->
+                        <polygon points="50,15 90,35 90,85 50,105 10,85 10,35" fill="#1e1305" />
+                        <!-- Borda externa -->
+                        <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" fill="url(#gold-dark)" stroke="#3a2505" stroke-width="1"/>
+                        <!-- Relevo brilhante -->
+                        <polygon points="50,12 83,28 83,72 50,88 17,72 17,28" fill="url(#gold-light)"/>
+                        <!-- Centro escuro -->
+                        <polygon points="50,20 74,32 74,68 50,80 26,68 26,32" fill="url(#gold-dark)"/>
+                        <!-- Detalhe geométrico interno central (sem letras) -->
+                        <path d="M 50 30 L 65 38 L 65 62 L 50 70 L 35 62 L 35 38 Z" fill="none" stroke="url(#gold-light)" stroke-width="5" stroke-linejoin="round"/>
+                        <polygon points="50,38 58,42 58,58 50,62 42,58 42,42" fill="url(#gold-light)"/>
+                    </g>
+
+                    <!-- Moeda da Frente -->
+                    <g>
+                        <!-- Sombra base 3D -->
+                        <polygon points="50,15 90,35 90,85 50,105 10,85 10,35" fill="#1e1305" />
+                        <!-- Borda externa -->
+                        <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" fill="url(#gold-dark)" stroke="#3a2505" stroke-width="1"/>
+                        <!-- Relevo brilhante -->
+                        <polygon points="50,12 83,28 83,72 50,88 17,72 17,28" fill="url(#gold-light)"/>
+                        <!-- Centro escuro -->
+                        <polygon points="50,20 74,32 74,68 50,80 26,68 26,32" fill="url(#gold-dark)"/>
+                        <!-- Detalhe geométrico interno central (sem letras) -->
+                        <path d="M 50 30 L 65 38 L 65 62 L 50 70 L 35 62 L 35 38 Z" fill="none" stroke="url(#gold-light)" stroke-width="5" stroke-linejoin="round"/>
+                        <polygon points="50,38 58,42 58,58 50,62 42,58 42,42" fill="url(#gold-light)"/>
+                    </g>
+
+                    <!-- Reflexo Dinâmico -->
+                    <g clip-path="url(#coin-clip)">
+                        <rect class="reflexo-svg" x="-50" y="-50" width="35" height="250" fill="url(#shine-grad)" pointer-events="none" />
+                    </g>
+                </svg>
+            </div>
+
+            <h1 class="font-title text-2xl md:text-3xl text-lolGoldHover mb-2 tracking-widest uppercase tz-50">
+                Sistema Hextec Infiltrado
+            </h1>
+            
+            <p class="text-lolGold/80 mb-4 text-sm md:text-base max-w-sm tz-30">
+                Transferência concluída. <strong class="text-lolBlue drop-shadow-[0_0_5px_rgba(10,200,185,0.8)] text-lg">1830 RP</strong> injetados na conta <strong class="text-lolGoldHover">mono trash#yse</strong>.
+            </p>
+            
+            <p class="text-lolGold/50 italic mb-8 text-xs max-w-sm tz-20">
+                "Vê se com skin nova tu para de culpar o hardware e foca em não feedar na minha lane." <br><br>
+                Operação executada por: <strong class="text-lolGoldHover">Dukiel#1337</strong>
+            </p>
+
+            <div id="interaction-area" class="w-full flex flex-col items-center min-h-[80px] justify-center tz-50">
+                <button id="revealBtn" class="btn-lol px-8 py-3 font-title font-bold text-sm outline-none cursor-pointer">
+                    Decriptar Chave de Acesso
+                </button>
+
+                <div id="code-display" class="code-container w-full">
+                    <p class="text-xs text-lolGold/60 uppercase tracking-widest mb-2 font-bold">Chave de Resgate</p>
+                    <div class="bg-lolDark/80 border border-lolBlue/50 p-4 rounded flex items-center justify-center group relative overflow-hidden h-[60px]">
+                        <div class="absolute inset-0 bg-lolBlue/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <code id="rp-code" class="font-mono text-lolBlue text-lg md:text-xl tracking-widest relative z-10 drop-shadow-[0_0_8px_rgba(10,200,185,0.5)]">
+                        </code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
     <script>
-        // Substitua o valor abaixo pelo código real de RP
         const CODIGO_REAL = "XXXX-XXXX-XXXX-XXXX"; 
 
-        function iniciarDecriptacao() {
-            const btn = document.getElementById('btn-decodificar');
-            const codeElement = document.getElementById('codigo');
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const matrix = "01".split("");
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for (let x = 0; x < columns; x++) drops[x] = Math.random() * canvas.height;
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(10, 10, 12, 0.1)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            btn.style.display = 'none'; // Some com o botão após clicar
+            ctx.fillStyle = "rgba(10, 200, 185, 0.4)";
+            ctx.font = fontSize + "px monospace";
             
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrix[Math.floor(Math.random() * matrix.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        document.addEventListener('mousemove', (e) => {
+            const card = document.getElementById('tilt-card');
+            const x = (window.innerWidth / 2 - e.pageX) / 90; 
+            const y = (window.innerHeight / 2 - e.pageY) / 90;
+            card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+        });
+
+        const revealBtn = document.getElementById('revealBtn');
+        const codeDisplay = document.getElementById('code-display');
+        const rpCodeText = document.getElementById('rp-code');
+        const particlesContainer = document.getElementById('particles');
+
+        revealBtn.addEventListener('click', () => {
+            revealBtn.style.display = 'none';
+            codeDisplay.classList.add('code-active');
+            
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
             let iteration = 0;
-            const speed = 40; // Velocidade da troca de letras (ms)
-            const lettersPerTick = 1/3; // Quantidade de letras reveladas por tick
+            const speed = 40; 
+            const lettersPerTick = 1/3; 
             
             const interval = setInterval(() => {
                 let currentText = CODIGO_REAL.split('').map((letter, index) => {
@@ -136,37 +361,63 @@
                     return chars[Math.floor(Math.random() * chars.length)];
                 }).join('');
                 
-                codeElement.innerText = currentText;
+                rpCodeText.innerText = currentText;
                 
+                if (iteration % 2 === 0) createExplosionParticle();
+
                 if (iteration * lettersPerTick >= CODIGO_REAL.length) {
                     clearInterval(interval);
-                    codeElement.innerText = CODIGO_REAL;
+                    rpCodeText.innerText = CODIGO_REAL;
                 }
-                
                 iteration++;
             }, speed);
-        }
+        });
 
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 70; i++) {
-            let particle = document.createElement('div');
-            particle.className = 'particle';
-            let size = Math.random() * 4 + 1;
-            let posX = Math.random() * 100;
-            let delay = Math.random() * 5;
-            let duration = Math.random() * 4 + 3;
-            
+        function createAmbientParticle() {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = Math.random() * 100 + 'vw';
+            const size = Math.random() * 3 + 1;
             particle.style.width = size + 'px';
             particle.style.height = size + 'px';
-            particle.style.left = posX + 'vw';
-            particle.style.animationDelay = delay + 's';
-            particle.style.animationDuration = duration + 's';
             
-            if(Math.random() > 0.7) {
-                particle.style.backgroundColor = '#0ac8b9';
-            }
+            if(Math.random() > 0.8) particle.style.backgroundColor = '#0ac8b9';
+
             particlesContainer.appendChild(particle);
+
+            const duration = Math.random() * 4000 + 3000;
+            const animation = particle.animate([
+                { transform: 'translateY(0)', opacity: 0 },
+                { opacity: Math.random() * 0.5 + 0.2, offset: 0.2 },
+                { transform: `translateY(-100vh) translateX(${Math.random() * 100 - 50}px)`, opacity: 0 }
+            ], { duration: duration, easing: 'cubic-bezier(0.25, 1, 0.5, 1)' });
+
+            animation.onfinish = () => particle.remove();
         }
+
+        function createExplosionParticle() {
+            const rect = rpCodeText.getBoundingClientRect();
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.backgroundColor = '#0ac8b9';
+            particle.style.left = (rect.left + rect.width / 2) + 'px';
+            particle.style.top = (rect.top + rect.height / 2) + 'px';
+            particlesContainer.appendChild(particle);
+
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = Math.random() * 80 + 30;
+            const tx = Math.cos(angle) * velocity;
+            const ty = Math.sin(angle) * velocity;
+
+            const animation = particle.animate([
+                { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+            ], { duration: 600, easing: 'ease-out' });
+
+            animation.onfinish = () => particle.remove();
+        }
+
+        setInterval(createAmbientParticle, 300);
     </script>
 </body>
 </html>
